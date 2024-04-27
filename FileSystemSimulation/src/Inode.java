@@ -9,12 +9,14 @@ public class Inode {
   private int blocksAllocated = 0; // Number of blocks allocated to the file
   private String lastModifiedTime; // Last modification time as a string
   private boolean used; // Indicates whether the inode is in use
+  private String directoryName; // The directory in which this inode is placed
 
   public Inode() {
     this.name = "";
     this.size = 0;
     this.lastModifiedTime = getCurrentTime(); // Initialize with the current time
     this.used = false;
+    this.directoryName = ""; // Default to empty, indicating not placed in any specific directory initially
   }
 
   // Utility method to get the current time as a string
@@ -42,7 +44,7 @@ public class Inode {
     this.lastModifiedTime = getCurrentTime();
   }
 
-  // Getters and Setters
+  // Getters and setters
   public String getName() {
     return name;
   }
@@ -69,22 +71,13 @@ public class Inode {
     return startingBlock;
   }
 
-  // Note: Setting starting block directly is not exposed as a setter to maintain
-  // encapsulation
-
   public int getBlocksAllocated() {
     return blocksAllocated;
   }
 
-  // Note: Setting blocks allocated directly is not exposed as a setter to
-  // maintain encapsulation
-
   public String getLastModifiedTime() {
     return lastModifiedTime;
   }
-
-  // Note: Setting the last modified time directly is not provided to ensure it's
-  // always accurate
 
   public boolean isUsed() {
     return used;
@@ -93,5 +86,13 @@ public class Inode {
   public void setUsed(boolean used) {
     this.used = used;
     updateModifiedTime();
+  }
+
+  public String getDirectoryName() {
+    return directoryName;
+  }
+
+  public void setDirectoryName(String directoryName) {
+    this.directoryName = directoryName;
   }
 }

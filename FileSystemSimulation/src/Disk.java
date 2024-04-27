@@ -2,21 +2,22 @@ import java.util.Arrays;
 
 public class Disk {
   private static final int BLOCK_SIZE = 1024;
-  private static final int DISK_SIZE_BYTE = 128 * BLOCK_SIZE; // Filesystem size in BYTEs
-  private static final int TOTAL_BLOCKS = (DISK_SIZE_BYTE / BLOCK_SIZE); // Total blocks
-  private Block[] blocks; // Array to store data blocks
-  private SuperBlock superBlock; // SuperBlock instance
-  private Directory rootDirectory; // Reference to the root directory
-  private boolean[] blocksUsed = new boolean[TOTAL_BLOCKS]; // Track block usage
+  private static final int DISK_SIZE_BYTE = 128 * BLOCK_SIZE;
+  private static final int TOTAL_BLOCKS = (DISK_SIZE_BYTE / BLOCK_SIZE);
+  private Block[] blocks;
+  private SuperBlock superBlock;
+  private Directory rootDirectory;
+  private boolean[] blocksUsed;
 
   public Disk() {
-    this.blocks = new Block[TOTAL_BLOCKS]; // Initialize blocks array
-    for (int i = 0; i < TOTAL_BLOCKS; i++) { // Initialize each block
+    this.blocks = new Block[TOTAL_BLOCKS];
+    for (int i = 0; i < TOTAL_BLOCKS; i++) {
       blocks[i] = new Block();
     }
-    this.superBlock = new SuperBlock(); // Initialize SuperBlock instance
-    this.rootDirectory = new Directory("root", this.superBlock); // Initialize root directory
-    Arrays.fill(blocksUsed, false); // Assume all blocks are initially free
+    this.superBlock = new SuperBlock();
+    this.rootDirectory = new Directory("root", this.superBlock, null); // Pass null as the parent for root
+    this.blocksUsed = new boolean[TOTAL_BLOCKS];
+    Arrays.fill(this.blocksUsed, false);
   }
 
   public int allocateBlocks(int size) {
@@ -37,14 +38,19 @@ public class Disk {
 
   private boolean areBlocksFree(int start, int size) {
     for (int i = start; i < start + size; i++) {
-      if (blocksUsed[i])
+      if (blocksUsed[i]) {
         return false;
+      }
     }
     return true;
   }
 
   public void freeBlocks(int start, int size) {
     markBlocksUsed(start, size, false);
+  }
+
+  public SuperBlock getSuperBlock() {
+    return this.superBlock;
   }
 
   public boolean writeFile(String command) {

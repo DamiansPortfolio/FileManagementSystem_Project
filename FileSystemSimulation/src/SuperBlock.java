@@ -17,6 +17,10 @@ public class SuperBlock {
     }
   }
 
+  public int getTotalBlocks() {
+    return TOTAL_BLOCKS;
+  }
+
   public int allocateBlock() {
     for (int i = 0; i < this.blockUsage.length; i++) {
       if (!this.blockUsage[i]) { // Free block found
@@ -44,23 +48,29 @@ public class SuperBlock {
     return null;
   }
 
-  // Method to list all inodes (files) along with their details
-  public void listInodes() {
-    System.out.println("Files in the filesystem:");
+  public void listInodes(String directoryName) {
+    System.out.println("Files in directory '" + directoryName + "':");
+    boolean found = false;
     for (Inode inode : inodes) {
-      if (inode.isUsed()) {
-        // Assuming size is in bytes and needs conversion to KB for display,
-        // or directly display if size is already in KB based on your implementation.
-        int sizeInKB = inode.getSize() / 1024;
+      if (inode.isUsed() && inode.getDirectoryName().equals(directoryName)) {
+        int sizeInKB = inode.getSize() / 1024; // Assume size is stored in bytes and we convert to KB for display
         System.out.println(
             "Name: " + inode.getName() + ", Size: " + sizeInKB + "KB, Last Modified: " + inode.getLastModifiedTime());
+        found = true;
       }
+    }
+    if (!found) {
+      System.out.println("No files found in this directory.");
     }
   }
 
   public Inode allocateInode(String fileName, int fileSizeInKB) {
-    if (fileSizeInKB > TOTAL_BLOCKS / MAX_FILES) { // Assuming each file can use up to 8 blocks
-      System.out.println("Error: File size exceeds maximum limit.");
+    // Calculate the number of blocks needed for the file size
+    int requiredBlocks = (int) Math.ceil(fileSizeInKB / (BLOCK_SIZE / 1024.0));
+
+    // Check if enough blocks are available before attempting to allocate
+    if (requiredBlocks > countFreeBlocks()) {
+      System.out.println("Error: Not enough space on disk to create file.");
       return null;
     }
 
@@ -69,14 +79,13 @@ public class SuperBlock {
         inode.setName(fileName);
         inode.setSize(fileSizeInKB * 1024); // Convert size back to bytes for storage
 
-        int requiredBlocks = fileSizeInKB; // Each block is 1KB, so this is direct
         int startingBlock = allocateBlocks(requiredBlocks);
         if (startingBlock != -1) {
           inode.allocateBlocks(startingBlock, requiredBlocks);
           inode.setUsed(true);
           return inode;
         } else {
-          System.out.println("Error: Not enough space on disk.");
+          System.out.println("Error: Not enough space on disk after all.");
           return null;
         }
       }
@@ -162,6 +171,13 @@ public class SuperBlock {
     }
     representation.append("]");
     return representation.toString();
+  }
+
+  public void moveInode(Inode inode, String newFileName, String newDirectoryName) {
+    // Directly update inode details without altering block allocation
+    inode.setName(newFileName);
+    inode.setDirectoryName(newDirectoryName);
+    System.out.println("File moved successfully: " + newFileName + " to " + newDirectoryName);
   }
 
 }
