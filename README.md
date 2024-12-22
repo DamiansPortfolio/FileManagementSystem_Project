@@ -1,6 +1,15 @@
 # File System Simulator
 
-A Java-based file system simulator that implements core concepts of operating system file management. This project simulates a basic file system with features like file creation, deletion, directory management, and block allocation.
+[![GitHub Repository](https://img.shields.io/badge/github-repo-green.svg)](https://github.com/DamiansPortfolio/FileManagementSystem_Project)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A Java-based file system simulator developed as a final project for the Operating Systems course at Towson University. This comprehensive implementation demonstrates core concepts of operating system file management through a practical simulation that includes file creation, deletion, directory management, and block allocation.
+
+## Repository
+
+- **GitHub**: [FileManagementSystem_Project](https://github.com/DamiansPortfolio/FileManagementSystem_Project)
+- **Author**: [DamiansPortfolio](https://github.com/DamiansPortfolio)
+- **Language**: Java
 
 ## Overview
 
@@ -67,12 +76,74 @@ The system consists of several key components:
 
 ## Usage
 
-### Running the Simulator
+## Installation and Setup
 
-```bash
-javac FileSystemCLI.java
-java FileSystemCLI
-```
+### Prerequisites
+
+- Java Development Kit (JDK) 8 or higher
+- Command line terminal/prompt
+- Git (optional, for cloning the repository)
+
+### Setup Instructions
+
+1. **Install Java Development Kit (JDK)**:
+   - Download and install JDK from Oracle's website or use your system's package manager
+   - Verify installation by running:
+     ```bash
+     java -version
+     javac -version
+     ```
+
+2. **Get the Source Code**:
+
+   Clone the repository using Git:
+   ```bash
+   git clone https://github.com/DamiansPortfolio/FileManagementSystem_Project.git
+   cd FileManagementSystem_Project
+   ```
+
+   Alternatively, you can download the ZIP file:
+   - Visit https://github.com/DamiansPortfolio/FileManagementSystem_Project
+   - Click the green "Code" button
+   - Select "Download ZIP"
+   - Extract the downloaded ZIP file
+   - Navigate to the extracted directory
+
+3. **Compile the Project**:
+   ```bash
+   # Compile all Java files
+   javac *.java
+   ```
+   This will create the corresponding .class files.
+
+4. **Run the Simulator**:
+   ```bash
+   java FileSystemCLI
+   ```
+   You should see the welcome message:
+   ```
+   Welcome to the Filesystem Simulator. Type 'help' for a list of commands.
+   Enter command:
+   ```
+
+### Troubleshooting
+
+Common issues and solutions:
+
+1. **Java Not Found**:
+   ```bash
+   'java' is not recognized as an internal or external command
+   ```
+   Solution: Add Java to your system's PATH environment variable
+
+2. **Compilation Errors**:
+   - Ensure all source files are in the same directory
+   - Check that your JDK version is compatible
+   - Verify all files have correct case-sensitive names
+
+3. **Runtime Errors**:
+   - Make sure you run the simulator from the directory containing the .class files
+   - Verify all files were compiled successfully (look for .class files)
 
 ### Available Commands
 
